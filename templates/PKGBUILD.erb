@@ -1,0 +1,34 @@
+pkgname=<%= name %>
+pkgver=<%= "#{epoch}:" if epoch %><%= version %><%= iteration && '-'+iteration.to_s %>
+pkgrel=<%= iteration or 1 %>
+pkgdesc=<%= description.split("\n").first %>
+arch=<%= architecture %>
+url=<%= url or "http://nourlgiven.example.com/" %>
+license=<%= license %>
+
+
+<% if !dependencies.empty? -%>
+<%   properdeps = dependencies.collect { |d| fix_dependency(d) }.flatten -%>
+Depends: <%= properdeps.flatten.join(", ") %>
+<% end -%>
+<% if !pre_dependencies.empty? -%>
+<%   properpredeps = pre_dependencies.collect { |d| fix_dependency(d) }.flatten -%>
+Pre-Depends: <%= properpredeps.flatten.join(", ") %>
+<% end -%>
+<% if !conflicts.empty? -%>
+Conflicts: <%= conflicts.join(", ") %>
+<% end -%>
+<% if !provides.empty? -%>
+Provides: <%= provides.join(", ") %>
+<% end -%>
+<% if !replaces.empty? -%>
+<%   properrepl = replaces.collect { |d| fix_dependency(d) }.flatten -%>
+Replaces: <%= properrepl.flatten.join(", ") %>
+<% end -%>
+Section: <%= category or "unknown" %>
+Priority: extra
+<% lines = (description or "no description given").split("\n") -%>
+<% firstline, *remainder = lines -%>
+<% if remainder.any? -%>
+<%= remainder.collect { |l| l =~ /^ *$/ ? " ." : " #{l}" }.join("\n") %>
+<% end -%>
