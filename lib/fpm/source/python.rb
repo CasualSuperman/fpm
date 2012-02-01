@@ -105,6 +105,9 @@ class FPM::Source::Python < FPM::Source
 
     self[:dependencies] = metadata["dependencies"].collect do |dep|
       name, cmp, version = dep.split
+      if name.start_with? self[:package_prefix]
+        name.gsub!(/^#{self[:package_prefix]}-/, "")
+      end
       "#{self[:package_prefix]}#{self[:suffix]}-#{name} #{cmp} #{version}"
     end
   end # def get_metadata
@@ -134,4 +137,4 @@ class FPM::Source::Python < FPM::Source
     return trash
   end # def garbage
 
-end # class FPM::Source::Gem
+end # class FPM::Source::Python
