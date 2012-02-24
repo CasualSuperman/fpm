@@ -1,9 +1,11 @@
 pkgname=<%= name %>
 pkgver=<%= "#{epoch}:" if epoch %><%= version %><%= iteration && '-'+iteration.to_s %>
 pkgrel=<%= iteration or 1 %>
-pkgdesc=<%= description.split("\n").first %>
+pkgdesc="<%= description.split("\n").first %>"
 arch=<%= architecture %>
-url=<%= url or "http://nourlgiven.example.com/" %>
+<% if url -%>
+url=<%= url %>
+<% end -%>
 license=<%= license %>
 
 
